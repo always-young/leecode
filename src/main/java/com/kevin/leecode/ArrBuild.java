@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * 给定N 生成一个长度为N数组  保证生成的数据满足一下条件
  * 任意的 i<k<j 满足  arr[i] + arr[j] != 2 arr[k]
- *
+ * 思路 先构造 N/2位数满足要求 然后使用构造好的左边放奇数 2*arr[i]+1 右边放偶数2*arr[i]
  * @author Kevin Liu
  */
 public class ArrBuild {
