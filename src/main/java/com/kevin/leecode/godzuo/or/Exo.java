@@ -1,7 +1,7 @@
-package com.kevin.leecode.or;
+package com.kevin.leecode.godzuo.or;
 
 /**
- * 异或带啊吗
+ * 异或代码相关
  */
 public class Exo {
 

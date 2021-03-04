@@ -1,4 +1,4 @@
-package com.kevin.leecode;
+package com.kevin.leecode.godzuo.interview;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package com.kevin.leecode.sort;
+package com.kevin.leecode.godzuo.sort;
 
 /**
  * @author Kevin Liu

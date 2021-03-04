@@ -1,6 +1,4 @@
-package com.kevin.leecode.sort;
-
-import java.util.Arrays;
+package com.kevin.leecode.godzuo.sort;
 
 /**
  * 插入排序
