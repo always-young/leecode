@@ -1,4 +1,4 @@
-package com.kevin.leecode.stack;
+package com.kevin.leecode.godzuo.stack;
 
 /**
  * 循环数组实现
