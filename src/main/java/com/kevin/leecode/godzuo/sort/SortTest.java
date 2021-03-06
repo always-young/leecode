@@ -19,7 +19,7 @@ public class SortTest {
         //Sort sort = new MergeSort();
         //快速排序
         //Sort sort = new QuickSort();
-        Sort sort = new HeapSort();
+        Sort sort = new HeapSortForNew();
         sort.sort(arr);
         System.out.println(Arrays.toString(arr));
     }
