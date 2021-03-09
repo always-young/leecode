@@ -2,6 +2,9 @@ package com.kevin.leecode.online.middle;
 
 import com.kevin.leecode.online.simple.ListNode;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 /**
  * @author kevin lau
  */
@@ -78,15 +81,200 @@ public class LinkedList {
         return h.next;
     }
 
+
+    public ListNode partition(ListNode head, int x) {
+        if (head == null) return null;
+        ListNode sH = null, sE = null, mH = null, mE = null;
+        while (head != null) {
+            if (head.val < x) {
+                if (sH == null) {
+                    sH = head;
+                    sE = head;
+                } else {
+                    sE.next = head;
+                    sE = head;
+                }
+            } else {
+                if (mH == null) {
+                    mH = head;
+                    mE = head;
+                } else {
+                    mE.next = head;
+                    mE = head;
+                }
+            }
+            head = head.next;
+        }
+        if (sH != null) {
+            sE.next = mH;
+        }
+        if(mE!=null) mE.next = null;
+        return sH == null ? mH : sH;
+
+    }
+
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if(head == null || left>right) {
+            return null;
+        }
+        ListNode h  = new ListNode(-1);
+        h.next = head;
+        //记录修改前的位置
+        ListNode prev = h;
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
+        }
+        ListNode p = null,next = null,q = prev.next;
+        for(int i = 0;i<=right - left;i++ ) {
+            next = q.next;
+            q.next = p;
+            p = q;
+            q = next;
+        }
+        prev.next.next = next;
+        prev.next = p;
+        return h.next;
+    }
+
+    //获取链表环的第一个节点
+    public ListNode detectCycle(ListNode head) {
+        if(head == null || head.next ==null||head.next.next == null) {
+            return null;
+        }
+
+        ListNode slow = head.next,fast = head.next.next;
+        while (slow != fast) {
+            if(fast.next == null || fast.next.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = head;
+        while(fast!=slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return fast;
+    }
+
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null||head.next.next == null) {
+            return ;
+        }
+        ListNode slow = head.next,fast = head.next.next;
+        while(fast.next!=null&&fast.next.next!=null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //此时slow就是中点 将slow后面的开始反转
+        ListNode p = slow.next;
+        ListNode q = null,next;
+        while(p!=null) {
+            next = p.next;
+            p.next = q;
+            q = p;
+            p = next;
+        }
+        int i=0;
+        ListNode z = head;
+        ListNode k = new ListNode(-1),x = k;
+        slow.next = null;
+        while (z != null && q!=null) {
+            if (i % 2 == 0) {
+                x.next = z;
+                z = z.next;
+            } else {
+                x.next = q;
+                q = q.next;
+            }
+            x = x.next;
+            i++;
+        }
+        while(z!=null) {
+            x.next = z;
+            z=z.next;
+            x = x.next;
+        }
+        while(q!=null) {
+            x.next = q;
+            q = q.next;
+            x = x.next;
+        }
+        head = k.next;
+    }
+
+    public ListNode insertionSortList(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(-1),pre;
+        dummy.next = head;
+        while (head != null&&head.next!=null) {
+            if(head.val <= head.next.val) {
+                head = head.next;
+                continue;
+            }
+            pre = dummy;
+            while(pre.next.val < head.next.val) {
+                pre =pre.next;
+            }
+            ListNode next = head.next;
+            head.next = next.next;
+            next.next = pre.next;
+            pre.next = next;
+        }
+
+        return dummy.next;
+
+    }
+
+
+    public ListNode oddEvenList(ListNode head) {
+       if(head == null || head.next ==null) {
+           return head;
+       }
+       ListNode odd = null,even = null,prev  = null,last = null;
+       int i=1;
+        while (head != null) {
+            if (i % 2 != 0) {
+               if(odd==null) {
+                    odd = head;
+                    prev = head;
+               }else{
+                   odd.next = head;
+                   odd =head;
+               }
+            } else {
+                if(even == null) {
+                    even = head;
+                    last = head;
+                }else{
+                    even.next = head;
+                    even = head;
+                }
+            }
+            i++;
+            head = head.next;
+        }
+        if(even!=null) {
+            even.next = null;
+        }
+        odd.next = last;
+        return prev;
+    }
+
     public static void main(String[] args) {
         ListNode head = new ListNode(1);
         ListNode h1 = new ListNode(2);
-        ListNode h2 = new ListNode(2);
+        ListNode h2 = new ListNode(3);
         ListNode h3 = new ListNode(4);
         ListNode h4 = new ListNode(5);
+        ListNode h5 = new ListNode(6);
+        ListNode h6 = new ListNode(7);
         head.next = h1;h1.next = h2;h2.next = h3;
-        h3.next = h4;
-        new LinkedList().deleteDuplicates(head);
+        h3.next = h4;h4.next = h5;h5.next = h6;
+        new LinkedList().reorderList(head);
         System.out.println();
     }
 }
