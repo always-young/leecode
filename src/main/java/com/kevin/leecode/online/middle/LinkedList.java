@@ -4,6 +4,7 @@ import com.kevin.leecode.online.simple.ListNode;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Stack;
 
 /**
  * @author kevin lau
@@ -264,6 +265,107 @@ public class LinkedList {
         return prev;
     }
 
+    //
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if(l1 == null && l2 == null) {
+            return null;
+        }
+        if(l1 == null) {
+            return l2;
+        }
+        if(l2 == null) {
+            return l1;
+        }
+
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        Stack<Integer> sum = new Stack<>();
+        while(l1!=null) {
+            s1.add(l1.val);
+            l1 = l1.next;
+        }
+        while (l2!=null) {
+            s2.add(l2.val);
+            l2 = l2.next;
+        }
+        int scale = 0;
+        int s,v;
+        while(!s1.empty()&&!s2.empty()) {
+            s = s1.pop() + s2.pop() + scale;
+            v = s % 10;
+            scale = s/10;
+            sum.add(v);
+        }
+        while(!s1.empty()) {
+            s = s1.pop()+scale;
+            v = s %10;
+            scale = s/10;
+            sum.add(v);
+        }
+        while(!s2.empty()) {
+            s = s2.pop()+scale;
+            v = s %10;
+            scale = s/10;
+            sum.add(v);
+        }
+        if(s1.empty()&&s2.empty()&&scale!=0) {
+            sum.add(scale);
+        }
+        ListNode h = new ListNode(-1),z=h;
+        while(!sum.isEmpty()) {
+            h.next = new ListNode(sum.pop());
+            h = h.next;
+        }
+        return z.next;
+    }
+
+    //分割链表
+    public ListNode[] splitListToParts(ListNode root, int k) {
+        if(k<=0) {
+            return new ListNode[0];
+        }
+        ListNode []node = new ListNode[k];
+        ListNode s = root;
+        int size = 0;
+        while(s!=null) {
+            size++;
+            s = s.next;
+        }
+        s = root;
+        int i=0;
+        if (size <= k) {
+           while(s!=null) {
+               node[i++] = new ListNode(s.val);
+               s = s.next;
+           }
+        }else{
+            int base = size / k;
+            int another =size % k;
+            while(s!=null) {
+                ListNode prev = null;
+                for(int z = 0;z<base;z++) {
+                    if(node[i] == null) {
+                        node[i] = new ListNode(s.val);
+                        prev = node[i];
+                    }else{
+                        ListNode listNode = new ListNode(s.val);
+                        prev.next = listNode;
+                        prev = prev.next;
+                    }
+                    s = s.next;
+                }
+                if(another>0) {
+                    prev.next = new ListNode(s.val);
+                    another--;
+                    s = s.next;
+                }
+                i++;
+            }
+        }
+        return node;
+
+    }
+
     public static void main(String[] args) {
         ListNode head = new ListNode(1);
         ListNode h1 = new ListNode(2);
@@ -274,7 +376,7 @@ public class LinkedList {
         ListNode h6 = new ListNode(7);
         head.next = h1;h1.next = h2;h2.next = h3;
         h3.next = h4;h4.next = h5;h5.next = h6;
-        new LinkedList().reorderList(head);
+        new LinkedList().splitListToParts(head,3);
         System.out.println();
     }
 }
