@@ -92,16 +92,18 @@ public class LinkedList {
                     sH = head;
                     sE = head;
                 } else {
-                    sE.next = head;
-                    sE = head;
+                    ListNode val = new ListNode(head.val);
+                    val.next = sH;
+                    sH = val;
                 }
             } else {
                 if (mH == null) {
                     mH = head;
                     mE = head;
                 } else {
-                    mE.next = head;
-                    mE = head;
+                    ListNode val = new ListNode(head.val);
+                    val.next = mH;
+                    mH = val;
                 }
             }
             head = head.next;
@@ -114,6 +116,7 @@ public class LinkedList {
 
     }
 
+    //旋转给定值的链表
     public ListNode reverseBetween(ListNode head, int left, int right) {
         if(head == null || left>right) {
             return null;
@@ -159,6 +162,7 @@ public class LinkedList {
         return fast;
     }
 
+    //重排链表
     public void reorderList(ListNode head) {
         if(head == null || head.next == null||head.next.next == null) {
             return ;
@@ -266,7 +270,7 @@ public class LinkedList {
     }
 
     //
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         if(l1 == null && l2 == null) {
             return null;
         }
@@ -366,17 +370,114 @@ public class LinkedList {
 
     }
 
+    //链表求和
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if(l1 == null&&l2==null) return null;
+        if(l1==null) return l2;
+        if (l2==null) return l1;
+
+        ListNode result = new ListNode(-1),q = result;
+        int scale = 0;
+        int sum;
+        while(l1!=null&&l2!=null) {
+            sum = l1.val+l2.val+scale;
+            q.next = new ListNode(sum % 10);
+            q = q.next;
+            scale = sum / 10;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        while (l1!=null) {
+            sum = l1.val + scale;
+            q.next = new ListNode(sum % 10);
+            q = q.next;
+            scale = sum / 10;
+            l1 = l1.next;
+        }
+        while (l2!=null) {
+            sum = l2.val + scale;
+            q.next = new ListNode(sum % 10);
+            q = q.next;
+            scale = sum / 10;
+            l2 = l2.next;
+        }
+        if(scale!=0)  q.next = new ListNode(scale);
+        return result.next;
+    }
+
+    //交换正数第K个和倒数第K个
+    public ListNode swapNodes(ListNode head, int k) {
+        if(head == null ||head.next == null|| k <=0) return head;
+        ListNode h = new ListNode(-1);
+        h.next = head;
+        ListNode pre = h,z = head;
+        for (int i = 0; i < k-1; i++) {
+            pre = z;
+            z= z.next;
+            if(z == null) {
+                return null;
+            }
+        }
+
+        ListNode start = head,p = h,end = z;
+        while(end.next!=null) {
+            p = start;
+            start = start.next;
+            end = end.next;
+        }
+        //start和z为要交换的结点 prev和p为两个交换的前结点
+        //不相邻
+        if(z.next==start) {
+            ListNode next = start.next;
+            pre.next = start;
+            start.next = z;
+            z.next = next;
+            return h.next;
+        }
+        if(start.next == z) {
+            ListNode next = z.next;
+            p.next = z;
+            z.next = start;
+            start.next = next;
+            return h.next;
+        }
+        ListNode next = start.next;
+        pre.next = start;
+        start.next = z.next;
+        p.next = z;
+        z.next = next;
+        return h.next;
+    }
+
+    //删除第一个链表 拼接上第二个链表
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        if(list1 == null || a>b) return null;
+        ListNode pre = new ListNode(-1),p = pre;
+        pre.next = list1;
+        ListNode index = list1;
+        //p表示要移出的前序结点 index表示被删除的结点
+        for (int i = 0; i < a; i++) {
+            p = index;
+            index = index.next;
+        }
+        for (int i = 0; i < b - a; i++) {
+            index = index.next;
+        }
+        p.next = list2;
+        p = list2;
+        while(p.next!=null) {
+            p = p.next;
+        }
+        p.next = index.next;
+        return pre.next;
+    }
+
+
     public static void main(String[] args) {
-        ListNode head = new ListNode(1);
-        ListNode h1 = new ListNode(2);
-        ListNode h2 = new ListNode(3);
-        ListNode h3 = new ListNode(4);
-        ListNode h4 = new ListNode(5);
-        ListNode h5 = new ListNode(6);
-        ListNode h6 = new ListNode(7);
-        head.next = h1;h1.next = h2;h2.next = h3;
-        h3.next = h4;h4.next = h5;h5.next = h6;
-        new LinkedList().splitListToParts(head,3);
+        ListNode head = new ListNode(100);
+        ListNode h1 = new ListNode(90);
+        head.next = h1;
+        System.out.println(new LinkedList().swapNodes(head, 2));
         System.out.println();
     }
 }
