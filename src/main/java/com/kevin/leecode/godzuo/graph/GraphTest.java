@@ -18,7 +18,8 @@ public class GraphTest {
         graph.add(6,9,7);
         graph.add(6,3,8);
         graph.add(9,7,9);
-        final List<Edge> edges = graph.minTree();
-        edges.forEach(t-> System.out.println(t.weight));
+        new Dijkstra().dijkstra(graph.nodes.get(1)).forEach((k,v)->{
+            System.out.println(k.value +" - > " + v);
+        });
     }
 }
