@@ -20,13 +20,12 @@ public class PrintStr {
 
     public void print(String str, int index, List<String> ans, String path) {
         if (index == str.length()) {
-            ans.add(path);
+            if(path!=null&&path.length()>0) {
+                ans.add(path);
+            }
             return;
         }
-        if (index != str.length() - 1) {
-            String no = path;
-            print(str, index + 1, ans, no);
-        }
+        print(str, index + 1, ans, path);
         path = path + str.charAt(index);
         print(str, index + 1, ans, path);
     }
